@@ -4,11 +4,15 @@ const msjBienvenida = () => {
 };
 
 class producto{
-    constructor(id, nombre,precio){
+    constructor(id, nombre, precio){
         this.id = id
         this.nombre = nombre
         this.precio = precio
         this.cantidad = 1
+    }
+
+    inventario(){
+        return " id: "+this.id+ " nombre: "+this.nombre+ " precio: $"+this.precio+"\n"
     }
 }
 
@@ -18,9 +22,25 @@ class carrito{
     }
 }
 
-class verProductos {
+class verProductos{
     constructor(){
         this.muestrarioProductos = []
+    }
+
+    aniadir(producto){
+        this.muestrarioProductos.push(producto)
+    }
+
+    mostrar(){
+        let detalleLP = "En la próxima pantalla, deberá ingresar el número de ID correspondiente al producto que desea\n\n\n "
+        this.muestrarioProductos.forEach( producto => {
+            detalleLP = detalleLP + producto.inventario()
+        })
+        return detalleLP
+    }
+
+    explorar(id){
+        return this.muestrarioProductos.find(producto => producto.id == id)
     }
 }
 
@@ -33,54 +53,26 @@ const p5 = new producto(5, "Aros Renata", 4400)
 const p6 = new producto(6, "Collar Estrellas", 3600)
 
 
-// Función para mostrar opciones
-const selectOption = () => {
-    const opcionProductos = 1;
-    const opcionAccesorios = 2;
+const reguladorP = new verProductos()
+reguladorP.aniadir(p1)
+reguladorP.aniadir(p2)
+reguladorP.aniadir(p3)
+reguladorP.aniadir(p4)
+reguladorP.aniadir(p5)
+reguladorP.aniadir(p6)
 
-    const eleccion = Number(prompt("Elige: 1 - Productos, 2 - Accesorios"));
+// Muestro al usuario el listado de mis productos
+alert( reguladorP.mostrar() )
 
-    if (eleccion === opcionProductos) {
-        mostrarOpciones(productos);
-    } else if (eleccion === opcionAccesorios) {
-        mostrarOpciones(accesorios);
-    } else {
-        alert("Eleccion inválida");
-    }
-};
+// Pedimos al usuario registrar el ID del producto deseado 
+let id = Numbre(prompt("Ingrese el número de ID correspondiente al producto que desea"))
 
-// Función para mostrar opciones y obtener elección
-const mostrarOpciones = (lista) => {
-    let mensaje = "Elige una opción:\n";
+const producto = reguladorP.explorar(id)
 
-    for (let posicion = 0; posicion < lista.length; posicion++) {
-        mensaje += `${posicion + 1} - ${lista[posicion].nombre}\n`;
-    }
+//Obtener stock de dichos productos
+let productosDeseados = Numbre(prompt ("Ingrese la cantidad que desea obtener del mismo"))
 
-    const eleccion = Number(prompt(mensaje)) - 1;
-
-    if (eleccion >= 0 && eleccion < lista.length) {
-        const itemElegido = lista[eleccion];
-        alert(`Elegiste ${itemElegido.nombre}. El precio es $${itemElegido.precio}`);
-    } 
-    else {
-    alert("Eleccion inválida");
-    }
-}
-
-const mostrarCarrito = () => {
-let carritoMensaje = "Productos en el carrito:\n";
-
-carrito.items.forEach(item => {
-carritoMensaje += `${item.nombre} - $${item.precio}\n`;
-});
-
-carritoMensaje += `Total: $${carrito.total}`;
-
-alert(carritoMensaje);
-};
+producto.cantidad = productosDeseados
 
 // Llamar a las funciones de bienvenida y selección de opciones
 msjBienvenida();
-selectOption();
-mostrarCarrito();
