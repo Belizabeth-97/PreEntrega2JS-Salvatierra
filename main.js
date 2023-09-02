@@ -3,6 +3,9 @@ const msjBienvenida = () => {
     alert("¡Bienvenido a Felicitas!");
 };
 
+// Llamar a las funciones de bienvenida 
+msjBienvenida();
+
 class producto{
     constructor(id, nombre, precio){
         this.id = id
@@ -11,8 +14,16 @@ class producto{
         this.cantidad = 1
     }
 
+    agregarUnidades (stockSolicitado){
+        this.Unidades = this.Unidades + stockSolicitado
+    }
+
     inventario(){
-        return " id: "+this.id+ " nombre: "+this.nombre+ " precio: $"+this.precio+"\n"
+        return " "+this.id+ " "+this.nombre+ " $"+this.precio+"\n"
+    }
+
+    descripcionCarrito (){
+        return " "+this.id+ " "+this.nombre+ " $"+this.precio+ " cantidad: "+this.cantidad+"\n"
     }
 }
 
@@ -32,7 +43,7 @@ class verProductos{
     }
 
     mostrar(){
-        let detalleLP = "En la próxima pantalla, deberá ingresar el número de ID correspondiente al producto que desea\n\n\n "
+        let detalleLP = "En la próxima pantalla, deberá ingresar el número de ID correspondiente al producto que desea\n\n"
         this.muestrarioProductos.forEach( producto => {
             detalleLP = detalleLP + producto.inventario()
         })
@@ -61,18 +72,18 @@ reguladorP.aniadir(p4)
 reguladorP.aniadir(p5)
 reguladorP.aniadir(p6)
 
+
 // Muestro al usuario el listado de mis productos
 alert( reguladorP.mostrar() )
 
 // Pedimos al usuario registrar el ID del producto deseado 
-let id = Numbre(prompt("Ingrese el número de ID correspondiente al producto que desea"))
+let id = Number(prompt("Ingrese el número de ID correspondiente al producto que desea"))
 
-const producto = reguladorP.explorar(id)
+const mercaderia = reguladorP.explorar(id)
 
 //Obtener stock de dichos productos
-let productosDeseados = Numbre(prompt ("Ingrese la cantidad que desea obtener del mismo"))
+let productosDeseados = Number(prompt ("Ingrese la cantidad que desea obtener del mismo"))
 
 producto.cantidad = productosDeseados
 
-// Llamar a las funciones de bienvenida y selección de opciones
-msjBienvenida();
+
