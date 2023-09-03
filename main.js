@@ -3,9 +3,6 @@ const msjBienvenida = () => {
     alert("¡Bienvenido a Felicitas!");
 };
 
-// Llamar a las funciones de bienvenida 
-msjBienvenida();
-
 class producto{
     constructor(id, nombre, precio){
         this.id = id
@@ -31,7 +28,7 @@ class producto{
     }
 }
 
-class carrito{
+class Carrito{
     constructor(){
         this.agregadosCarrito = []
     }
@@ -60,7 +57,7 @@ class carrito{
 
 }
 
-class verProductos{
+class Tienda{
     constructor(){
         this.muestrarioProductos = []
     }
@@ -90,32 +87,35 @@ const p4 = new producto(4, "Anillo cobra", 5300)
 const p5 = new producto(5, "Aros Renata", 4400)
 const p6 = new producto(6, "Collar Estrellas", 3600)
 
-const tienda = new carrito()
+const carrito = new Carrito()
 
-const reguladorP = new verProductos()
-reguladorP.aniadir(p1)
-reguladorP.aniadir(p2)
-reguladorP.aniadir(p3)
-reguladorP.aniadir(p4)
-reguladorP.aniadir(p5)
-reguladorP.aniadir(p6)
+const tienda = new Tienda()
+tienda.aniadir(p1)
+tienda.aniadir(p2)
+tienda.aniadir(p3)
+tienda.aniadir(p4)
+tienda.aniadir(p5)
+tienda.aniadir(p6)
 
 let finalizarCompra = "finalizar"
 
+// Llamar a las funciones de bienvenida 
+msjBienvenida();
+
 do{
-alert( reguladorP.mostrar() )
+alert( tienda.mostrar() )
 
     let id = Number(prompt("Ingrese el número de ID correspondiente al producto que desea"))
         
-    const productoSeleccionado = reguladorP.explorar(id)
+    const productoSeleccionado = tienda.explorar(id)
 
     let cantidadSolicitada = Number(prompt ("Ingrese la cantidad que desea obtener del mismo"))
     
     productoSeleccionado.validarStock(cantidadSolicitada)
     
-    tienda.agregar(productoSeleccionado, cantidadSolicitada)
+    carrito.agregar(productoSeleccionado, cantidadSolicitada)
 
-alert (tienda.mostrar())
+alert (carrito.mostrar())
  
 finalizarCompra = prompt ("Si usted desea finalizar la compra, ingrese la palabra finalizar").toLowerCase()
 } while ((finalizarCompra != "finalizar"))
