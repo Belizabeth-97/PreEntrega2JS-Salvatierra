@@ -11,7 +11,7 @@ class producto{
         this.id = id
         this.nombre = nombre
         this.precio = precio
-        this.cantidad = 1
+        this.cantidad = 10
     }
 
     agregarUnidades (stockSolicitado){
@@ -25,12 +25,39 @@ class producto{
     descripcionCarrito (){
         return " "+this.id+ " "+this.nombre+ " $"+this.precio+ " cantidad: "+this.cantidad+"\n"
     }
+
+    validarStock(cantidadSolicitada) {
+        return cantidadSolicitada <= this.cantidad 
+    }
 }
 
 class carrito{
     constructor(){
         this.agregadosCarrito = []
     }
+    // Verificar si el producto ya existe en el carrito.
+    agregar(productoN, cantidadSolicitada){
+       let Existe = this.agregadosCarrito.some(producto => producto.id == productoN.id)
+    // Si no existe, agregarlo al carrito.
+    if (!Existe){ 
+        let productoYCantidad = { producto: productoN, cantidadSolicitada }
+        this.agregadosCarrito.push(productoYCantidad);  
+        console.log(' producto " ${productoN.nombre} "agregado al carrito.')
+    }
+}
+    mostrar(){
+        let detalleListaProductos = "Tu pedido:\n\n"
+        this.agregadosCarrito.forEach( productoYCantidad => {
+            let mensaje =  productoYCantidad.cantidadSolicitada + " " + productoYCantidad.producto.nombre  + " " + "$"+productoYCantidad.producto.precio + "c/u. \n"
+            detalleListaProductos = detalleListaProductos + mensaje
+         })
+        return detalleListaProductos
+    }
+
+    valorTotal(){
+        return this.agregadosCarrito.reduce( (total,producto) => total + producto.precio * producto.cantidad )
+    }
+
 }
 
 class verProductos{
@@ -43,7 +70,7 @@ class verProductos{
     }
 
     mostrar(){
-        let detalleLP = "En la próxima pantalla, deberá ingresar el número de ID correspondiente al producto que desea\n\n"
+        let detalleLP = "En la próxima pantalla, deberá ingresar el número correspondiente al producto que desea\n\n"
         this.muestrarioProductos.forEach( producto => {
             detalleLP = detalleLP + producto.inventario()
         })
@@ -63,6 +90,7 @@ const p4 = new producto(4, "Anillo cobra", 5300)
 const p5 = new producto(5, "Aros Renata", 4400)
 const p6 = new producto(6, "Collar Estrellas", 3600)
 
+const tienda = new carrito()
 
 const reguladorP = new verProductos()
 reguladorP.aniadir(p1)
@@ -72,18 +100,22 @@ reguladorP.aniadir(p4)
 reguladorP.aniadir(p5)
 reguladorP.aniadir(p6)
 
+let finalizarCompra = "finalizar"
 
-// Muestro al usuario el listado de mis productos
+do{
 alert( reguladorP.mostrar() )
 
-// Pedimos al usuario registrar el ID del producto deseado 
-let id = Number(prompt("Ingrese el número de ID correspondiente al producto que desea"))
+    let id = Number(prompt("Ingrese el número de ID correspondiente al producto que desea"))
+        
+    const productoSeleccionado = reguladorP.explorar(id)
 
-const mercaderia = reguladorP.explorar(id)
+    let cantidadSolicitada = Number(prompt ("Ingrese la cantidad que desea obtener del mismo"))
+    
+    productoSeleccionado.validarStock(cantidadSolicitada)
+    
+    tienda.agregar(productoSeleccionado, cantidadSolicitada)
 
-//Obtener stock de dichos productos
-let productosDeseados = Number(prompt ("Ingrese la cantidad que desea obtener del mismo"))
-
-producto.cantidad = productosDeseados
-
-
+alert (tienda.mostrar())
+ 
+finalizarCompra = prompt ("Si usted desea finalizar la compra, ingrese la palabra finalizar").toLowerCase()
+} while ((finalizarCompra != "finalizar"))
